@@ -2,13 +2,24 @@
 CC = gcc
 CFLAGS  = -g -W -Wall -fPIC
 
+# file extensions
+ifeq ($(OS), WINNT)
+  SHLIB_EXT = dll
+  SHELL_EXT = bat
+else ifeq ($(OS), Darwin)
+  SHLIB_EXT = dylib
+  SHELL_EXT = sh
+else
+  SHLIB_EXT = so
+  SHELL_EXT = sh
+endif
+
 SRCS = egvec.c egop.c
 OBJS = $(SRCS:.c=.o)
 LIBNAME = eglib
 DEMO = egdemo
-SHLIBEXT = dylib
 LIBTOOL = libtool
-LIB = lib$(LIBNAME).$(SHLIBEXT)
+LIB = lib$(LIBNAME).$(SHLIB_EXT)
 
 all:    $(LIB) $(DEMO)
 
