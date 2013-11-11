@@ -11,12 +11,17 @@ static egOp _egOpMultiply = { "*", opMultiply };
 egOp *const egOpAdd = &_egOpAdd;
 egOp *const egOpMultiply = &_egOpMultiply;
 
+void* const get_add() { return egOpAdd; }
+void* const get_multiply() { return egOpMultiply; }
+
 int
 egVecOperate(egVec *dst, const egOp *op,
              const egVec *srcA, const egVec *srcB) {
   static const char me[]="egVecOperate";
   size_t slen;
   unsigned int ii, nn;
+
+  printf("got op: %p addr to: %p    real op: %p\n", op, &op, egOpAdd);
 
   if (!( dst && op && srcA && srcB )) {
     fprintf(stderr, "%s: got NULL pointer\n", me);

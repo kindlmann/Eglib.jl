@@ -56,6 +56,9 @@ extern egOp *const egOpMultiply;
 extern int egVecOperate(egVec *dst, const egOp *op,
                         const egVec *srcA, const egVec *srcB);
 
+extern void* const get_add();
+extern void* const get_multiply();
+
 #ifdef __cplusplus
 }
 #endif

@@ -1,19 +1,25 @@
+# Run with:
+#   LD_LIBRARY_PATH=./eglib julia egdemo.jl  10 out.f
+
 typealias FILE Ptr{Void}
 
 require("libeg_h.jl")
 require("libeg.jl")
 
-egOpAdd = cglobal((:egOpAdd, "libeg"))
-egOpMultiply = cglobal((:egOpMultiply, "libeg"))
+# This should work, but it seems the static initialization doesn't happen using
+# dlopen/dlsym.
+#egOpAdd = cglobal((:egOpAdd, "libeg"))
+#egOpMultiply = cglobal((:egOpMultiply, "libeg"))
 
-println("egOpAdd: ", egOpAdd)
-println("egOpMultiply: ", egOpMultiply)
+# Helper functions to get the correct addresses
+egOpAdd = ccall((:get_add, "libeg"), Ptr{Void}, ())
+egOpMultiply = ccall((:get_multiply, "libeg"), Ptr{Void}, ())
 
 usage(prog) = println("usage: ", prog, " <N> <outfile>")
 
 # Note: Julia uses libuv for cross-platform async i/o, so we define our own ccall's to fopen/fclose for this demo.
 
-fopen(name::ASCIIString, mode::ASCIIString) = ccall(:fopen, Ptr{Void}, (Ptr{Uint8}, Ptr{Uint8}), "foo", "w")
+fopen(name::ASCIIString, mode::ASCIIString) = ccall(:fopen, Ptr{Void}, (Ptr{Uint8}, Ptr{Uint8}), name, mode)
 fclose(hnd::Ptr{Void}) = ccall(:fclose, Void, (Ptr{Void},), hnd)
 
 function main(argv)
