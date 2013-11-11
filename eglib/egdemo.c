@@ -9,7 +9,7 @@ usage(const char *me) {
 }
 
 int main(int argc, const char **argv) {
-  const char *me, *fname;
+  const char *me;
   FILE *file;
   unsigned int nn;
   egVec *A, *B, *C, *D;

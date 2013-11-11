@@ -11,8 +11,8 @@ static egOp _egOpMultiply = { "*", opMultiply };
 egOp *const egOpAdd = &_egOpAdd;
 egOp *const egOpMultiply = &_egOpMultiply;
 
-void* const get_add() { return egOpAdd; }
-void* const get_multiply() { return egOpMultiply; }
+void* get_add() { return egOpAdd; }
+void* get_multiply() { return egOpMultiply; }
 
 int
 egVecOperate(egVec *dst, const egOp *op,
