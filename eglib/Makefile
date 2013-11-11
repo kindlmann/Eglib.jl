@@ -20,14 +20,16 @@ else
 endif
 
 SRCS = egvec.c egop.c
+HDRS = eglib.h eglibPrivate.h
 OBJS = $(SRCS:.c=.o)
 LIBNAME = eg
 DEMO = egdemo
+DLDEMO = dlegdemo
 LIB = lib$(LIBNAME).$(SHLIB_EXT)
 
-all:    $(LIB) $(DEMO)
+all: $(LIB) $(DEMO) $(DLDEMO)
 
-.c.o:
+%.o: %.c $(HDRS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIB): $(OBJS)
@@ -35,6 +37,9 @@ $(LIB): $(OBJS)
 
 $(DEMO): $(LIB) $(DEMO).c
 	$(CC) $(CFLAGS) $(DEMO).c -o $(DEMO) -L. -l$(LIBNAME) -lm
+
+$(DLDEMO): $(HDRS) $(DLDEMO).c
+	$(CC) $(CFLAGS) -DSHLIB_EXT=\"$(SHLIB_EXT)\" $(DLDEMO).c -o $(DLDEMO) -lm
 
 clean:
 	rm -rf *.o $(LIB) $(DEMO) $(DEMO).dSYM
