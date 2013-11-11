@@ -1,0 +1,37 @@
+               _
+   _       _ _(_)_     |  A fresh approach to technical computing
+  (_)     | (_) (_)    |  Documentation: http://docs.julialang.org
+   _ _   _| |_  __ _   |  Type "help()" to list help topics
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 0.2.0-rc3+37 (2013-11-09 06:29 UTC)
+ _/ |\__'_|_|_|\__'_|  |  Commit 287ace1 (0 days old master)
+|__/                   |  x86_64-linux-gnu
+
+julia> using Clang.wrap_c
+       context = wrap_c.init(; output_file="libeg.jl",
+                             header_library=x->"eglib",
+                             header_wrapped=(x,y)->contains(y, "eglib.h"),
+                             common_file="libeg_h.jl", clang_diagnostics=true,
+                             clang_args=["-v"], clang_includes=["/cmn/julia/usr/bin/", "/home/isaiah/Downloads/Eglib.jl/eglib"])
+       context.options.wrap_structs = true
+       wrap_c.wrap_c_headers(context, ["eglib/eglib.h"])
+/cmn/julia/usr/bin/
+/home/isaiah/Downloads/Eglib.jl/eglib
+
+clang version 3.3 (tags/RELEASE_33/final)
+Target: x86_64-pc-linux-gnu
+Thread model: posix
+ignoring nonexistent directory "../lib/clang/3.3/include"
+ignoring nonexistent directory "/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /cmn/julia/usr/bin
+ /home/isaiah/Downloads/Eglib.jl/eglib
+ /usr/local/include
+ /usr/include/x86_64-linux-gnu
+ /usr/include
+End of search list.
+/usr/include/stdio.h:33:11: fatal error: 'stddef.h' file not found
+WRAPPING HEADER: eglib/eglib.h
+WARNING: Skipping unnamed StructDecl
+WARNING: Skipping unnamed StructDecl
