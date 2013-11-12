@@ -38,11 +38,13 @@ $(LIB): $(OBJS)
 $(DEMO): $(LIB) $(DEMO).c
 	$(CC) $(CFLAGS) $(DEMO).c -o $(DEMO) -L. -l$(LIBNAME) -lm
 
+## if using only dlopen/dlsym to get symbols from libeg
 $(DLDEMO): $(HDRS) $(DLDEMO).c
-#  if using version that only uses dlopen/dlsym
-	$(CC) $(CFLAGS) -DSHLIB_EXT=\"$(SHLIB_EXT)\" $(DLDEMO).c -o $(DLDEMO) -lm
-#  if using direct references (not via dlsym) to libeg symbols
-#	$(CC) $(CFLAGS) -DSHLIB_EXT=\"$(SHLIB_EXT)\" $(DLDEMO).c -o $(DLDEMO) -L. -l$(LIBNAME) -lm
+	$(CC) $(CFLAGS) -DSHLIB_EXT=\"$(SHLIB_EXT)\" $(DLDEMO).c -o $(DLDEMO) -ldl -lm
+
+## if using direct references (not via dlsym) to libeg symbols
+#$(DLDEMO): $(HDRS) $(DLDEMO).c
+#	$(CC) $(CFLAGS) -DSHLIB_EXT=\"$(SHLIB_EXT)\" $(DLDEMO).c -o $(DLDEMO) -L. -l$(LIBNAME) -ldl -lm
 
 clean:
-	rm -rf *.o $(LIB) $(DEMO) $(DEMO).dSYM
+	rm -rf *.o $(LIB) $(DEMO) $(DLDEMO) $(DEMO).dSYM
