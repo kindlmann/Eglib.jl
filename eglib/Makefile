@@ -39,7 +39,10 @@ $(DEMO): $(LIB) $(DEMO).c
 	$(CC) $(CFLAGS) $(DEMO).c -o $(DEMO) -L. -l$(LIBNAME) -lm
 
 $(DLDEMO): $(HDRS) $(DLDEMO).c
+#  if using version that only uses dlopen/dlsym
 	$(CC) $(CFLAGS) -DSHLIB_EXT=\"$(SHLIB_EXT)\" $(DLDEMO).c -o $(DLDEMO) -lm
+#  if using direct references (not via dlsym) to libeg symbols
+#	$(CC) $(CFLAGS) -DSHLIB_EXT=\"$(SHLIB_EXT)\" $(DLDEMO).c -o $(DLDEMO) -L. -l$(LIBNAME) -lm
 
 clean:
 	rm -rf *.o $(LIB) $(DEMO) $(DEMO).dSYM

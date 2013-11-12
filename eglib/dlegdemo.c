@@ -60,8 +60,18 @@ int main(int argc, const char **argv) {
   OpMultiply = *((void**)dlsym(lib, "egOpMultiply"));
   VecOperate = dlsym(lib, "egVecOperate");
 
-  printf("OpAdd->str = \"%s\"\n", OpAdd->str);
-  printf("OpMultiply->str = \"%s\"\n", OpMultiply->str);
+  printf("VecNew = %p\n", VecNew);
+  printf("OpAdd(%p)->str = \"%s\"\n", OpAdd, OpAdd->str);
+  printf("OpMultiply(%p)->str = \"%s\"\n", OpMultiply, OpMultiply->str);
+  /* learned that if you've linked an executable with a shared library,
+     and then also get symbols via dlopen/dlsym, they will be the same
+     as from the linked library */
+  /*
+  printf("egVecNew = %p\n", egVecNew);
+  printf("egOpAdd(%p)->str = \"%s\"\n", egOpAdd, egOpAdd->str);
+  printf("egOpMultiply(%p)->str = \"%s\"\n", egOpMultiply, egOpMultiply->str);
+  */
+
 
   A = VecNew(nn);
   B = VecNew(nn);
