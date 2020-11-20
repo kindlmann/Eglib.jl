@@ -1,6 +1,6 @@
 
-CC = gcc
-CFLAGS  = -g -W -Wall
+CC = cc
+CFLAGS  = -g -W -Wall -Wextra
 
 # http://stackoverflow.com/questions/714100/os-detecting-makefile
 ifeq ($(OS), WINNT)
@@ -15,7 +15,8 @@ else
   ifeq ($(UNAME_S),Darwin)
     SHLIB_EXT = dylib
     CFLAGS += -dynamic
-    LD = libtool -dynamic
+    #LD = libtool -dynamic
+    LD = clang -shared -fpic
   endif
 endif
 
@@ -33,7 +34,7 @@ all: $(LIB) $(DEMO) $(DLDEMO)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIB): $(OBJS)
-	$(LD) -o $(LIB) $(OBJS) -lm
+	$(LD) $(OBJS) -o $(LIB)
 
 $(DEMO): $(LIB) $(DEMO).c
 	$(CC) $(CFLAGS) $(DEMO).c -o $(DEMO) -L. -l$(LIBNAME) -lm

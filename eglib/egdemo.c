@@ -35,10 +35,12 @@ int main(int argc, const char **argv) {
   C = egVecNew(nn);
   D = egVecNew(nn);
 
-  if (egVecSet(A, 1)
-      || egVecSet(B, 2)
-      || egVecCopy(C, B)
-      || egVecOperate(D, egOpAdd, A, C)
+  if (egVecSet(A, 0.5)
+      || egVecSet(B, 1.0)
+      || egVecOperate(C, egOpAdd, A, B)
+      || egVecCopy(B, C)
+      || egVecSet(C, 2)
+      || egVecOperate(D, egOpMultiply, B, C)
       || egVecPrint(file, D)) {
     fprintf(stderr, "%s: problem\n", me);
     fclose(file);

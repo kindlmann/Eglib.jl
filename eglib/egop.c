@@ -29,7 +29,7 @@ egVecOperate(egVec *dst, const egOp *op,
   }
   slen = (strlen(srcA->desc) + strlen(op->str)
           + strlen(srcA->desc) + strlen("()()"));
-  if (_egVecAlloc(dst, slen + 1, srcA->nn)) {
+  if (_egVecAlloc(dst, slen, srcA->nn)) {
     fprintf(stderr, "%s: unable to allocate output\n", me);
     return 1;
   }

@@ -78,11 +78,13 @@ int main(int argc, const char **argv) {
   C = VecNew(nn);
   D = VecNew(nn);
 
-  if (VecSet(A, 1)
-      || VecSet(B, 2)
-      || VecCopy(C, B)
-      || VecOperate(D, OpAdd, A, C)
-      || VecPrint(file, D)) {
+  if (egVecSet(A, 0.5)
+      || egVecSet(B, 1.0)
+      || egVecOperate(C, egOpAdd, A, B)
+      || egVecCopy(B, C)
+      || egVecSet(C, 2)
+      || egVecOperate(D, egOpMultiply, B, C)
+      || egVecPrint(file, D)) {
     fprintf(stderr, "%s: problem\n", me);
     fclose(file);
     return 1;

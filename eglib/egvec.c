@@ -7,15 +7,21 @@ _egVecAlloc(egVec *evec, size_t slen, unsigned int nn) {
   static const char me[]="_egVecAlloc";
 
   if (evec->desc) { free(evec->desc); }
-  evec->desc = EG_CALLOC(slen, char);
-  if (evec->vv) { free(evec->vv); }
-  evec->vv = EG_CALLOC(nn, float);
-  if (!(evec->desc && evec->vv)) {
-    fprintf(stderr, "%s: couldn't allocate %u chars or %u floats\n",
-            me, (unsigned int)slen, nn);
-    return 1; /* possible leak */
+  evec->desc = EG_CALLOC(slen+1, char);
+  if (!evec->desc) {
+    fprintf(stderr, "%s: couldn't allocate %u chars\n",
+            me, (unsigned int)slen);
+    return 1;
   }
-  evec->nn = nn;
+  if (!( evec->vv && evec->nn == nn )) {
+    if (evec->vv) { free(evec->vv); }
+    evec->vv = EG_CALLOC(nn, float);
+    if (!evec->vv) {
+      fprintf(stderr, "%s: couldn't allocate %u floats\n", me, nn);
+      return 1;  /* possible leak */
+    }
+    evec->nn = nn;
+  }
   return 0;
 }
 
@@ -33,7 +39,7 @@ egVecNew(unsigned int nn) {
     fprintf(stderr, "%s: couldn't allocate egVec\n", me);
     return NULL;
   }
-  if (_egVecAlloc(ret, 1, nn)) {
+  if (_egVecAlloc(ret, 0, nn)) {
     fprintf(stderr, "%s: problem allocating\n", me);
     return NULL; /* possible leak */
   }
@@ -61,11 +67,12 @@ egVecSet(egVec *evec, float dd) {
   unsigned int ii, nn;
   char buff[512];
 
+  sprintf(buff, "%g", dd);
   if (!evec) {
     fprintf(stderr, "%s: got NULL pointer\n", me);
     return 1;
   }
-  sprintf(buff, "%g", dd);
+  /* too bad _egVecAlloc not usable for this */
   if (evec->desc) { free(evec->desc); }
   evec->desc = strdup(buff);
   nn = evec->nn;
@@ -84,7 +91,7 @@ egVecCopy(egVec *dst, const egVec *src) {
     fprintf(stderr, "%s: got NULL pointer\n", me);
     return 1;
   }
-  if (_egVecAlloc(dst, strlen(src->desc)+1, src->nn)) {
+  if (_egVecAlloc(dst, strlen(src->desc), src->nn)) {
     fprintf(stderr, "%s: trouble allocating output\n", me);
     return 1;
   }

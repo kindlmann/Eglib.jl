@@ -27,9 +27,10 @@ enum {
 };
 
 /*
-** things to try adding to structs:
-** fixed-length vector
-** variables of type size_t and ptrdiff_t
+** things to try:
+** make a "real" typedef
+** add to struct: fixed-length vector
+** add to struct: variables of type size_t and ptrdiff_t
 */
 
 typedef struct {
@@ -38,9 +39,9 @@ typedef struct {
 } egOp;
 
 typedef struct {
-  char *desc;
-  unsigned int nn;
-  float *vv;
+  char *desc;      /* nul-terminated string documenting values in vv */
+  float *vv;       /* array of values */
+  unsigned int nn; /* length of allocation of vv */
 } egVec;
 
 /* egvec.c */
