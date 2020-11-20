@@ -63,9 +63,10 @@ int main(int argc, const char **argv) {
   printf("VecNew = %p\n", VecNew);
   printf("OpAdd(%p)->str = \"%s\"\n", OpAdd, OpAdd->str);
   printf("OpMultiply(%p)->str = \"%s\"\n", OpMultiply, OpMultiply->str);
-  /* learned that if you've linked an executable with a shared library,
-     and then also get symbols via dlopen/dlsym, they will be the same
-     as from the linked library */
+  /* learned that if you've linked an executable with a shared library
+     (i.e. for this, adding "-L.  -lel" to link line) and then also
+     get symbols via dlopen/dlsym, they will be the same as from the
+     linked library */
   /*
   printf("egVecNew = %p\n", egVecNew);
   printf("egOpAdd(%p)->str = \"%s\"\n", egOpAdd, egOpAdd->str);
@@ -78,13 +79,13 @@ int main(int argc, const char **argv) {
   C = VecNew(nn);
   D = VecNew(nn);
 
-  if (egVecSet(A, 0.5)
-      || egVecSet(B, 1.0)
-      || egVecOperate(C, egOpAdd, A, B)
-      || egVecCopy(B, C)
-      || egVecSet(C, 2)
-      || egVecOperate(D, egOpMultiply, B, C)
-      || egVecPrint(file, D)) {
+  if (VecSet(A, 0.5)
+      || VecSet(B, 1.0)
+      || VecOperate(C, OpAdd, A, B)
+      || VecCopy(B, C)
+      || VecSet(C, 2)
+      || VecOperate(D, OpMultiply, B, C)
+      || VecPrint(file, D)) {
     fprintf(stderr, "%s: problem\n", me);
     fclose(file);
     return 1;
