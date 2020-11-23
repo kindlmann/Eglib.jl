@@ -104,8 +104,8 @@ egVecCopy(egVec *dst, const egVec *src) {
 }
 
 int
-egVecPrint(FILE *file, const egVec *evec) {
-  static const char me[]="egVecPrint";
+egVecWrite(FILE *file, const egVec *evec) {
+  static const char me[]="egVecWrite";
   unsigned int ii;
 
   if (!( file && evec )) {
@@ -116,5 +116,27 @@ egVecPrint(FILE *file, const egVec *evec) {
   for (ii=0; ii<evec->nn; ii++) {
     fprintf(file, "%3u %g\n", ii, evec->vv[ii]);
   }
+  return 0;
+}
+
+int
+egVecSave(const char *fname, const egVec *evec) {
+  static const char me[]="egVecSave";
+  FILE *file;
+
+  if (!( fname && evec )) {
+    fprintf(stderr, "%s: got NULL pointer\n", me);
+    return 1;
+  }
+  if (!(file = fopen(fname, "w"))) {
+    fprintf(stderr, "%s: couldn't open %s for writing: %s\n",
+            me, fname, strerror(errno));
+    return 1;
+  }
+  if (egVecWrite(file, evec)) {
+    fprintf(stderr, "%s: trouble", me);
+    return 1;
+  }
+  fclose(file);
   return 0;
 }

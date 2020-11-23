@@ -25,7 +25,7 @@ int main(int argc, const char **argv) {
   void (*VecNix)(egVec *egv);
   int (*VecSet)(egVec *egv, float kk);
   int (*VecCopy)(egVec *dst, const egVec *src);
-  int (*VecPrint)(FILE *file, const egVec *egv);
+  int (*VecWrite)(FILE *file, const egVec *egv);
   egOp *OpAdd;
   egOp *OpMultiply;
   int (*VecOperate)(egVec *dst, const egOp *op,
@@ -55,7 +55,7 @@ int main(int argc, const char **argv) {
   VecNix = dlsym(lib, "egVecNix");
   VecSet = dlsym(lib, "egVecSet");
   VecCopy = dlsym(lib, "egVecCopy");
-  VecPrint = dlsym(lib, "egVecPrint");
+  VecWrite = dlsym(lib, "egVecWrite");
   OpAdd = *((void**)dlsym(lib, "egOpAdd"));
   OpMultiply = *((void**)dlsym(lib, "egOpMultiply"));
   VecOperate = dlsym(lib, "egVecOperate");
@@ -85,7 +85,7 @@ int main(int argc, const char **argv) {
       || VecCopy(B, C)
       || VecSet(C, 2)
       || VecOperate(D, OpMultiply, B, C)
-      || VecPrint(file, D)) {
+      || VecWrite(file, D)) {
     fprintf(stderr, "%s: problem\n", me);
     fclose(file);
     return 1;

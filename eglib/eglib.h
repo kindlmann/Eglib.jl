@@ -18,13 +18,13 @@ extern "C" {
 #define EG_CALLOC(N, T) (T*)(calloc((N), sizeof(T)))
 
 /* see what happens with an enum */
-enum {
+typedef enum {
   egEnumNegOne = -1,
   egEnumZero,
   egEnumOne,
   egEnumTwo,
   egEnumThree
-};
+} egEnum;
 
 /*
 ** things to try:
@@ -49,7 +49,8 @@ extern egVec *egVecNew(unsigned int nn);
 extern void egVecNix(egVec *egv);
 extern int egVecSet(egVec *egv, float kk);
 extern int egVecCopy(egVec *dst, const egVec *src);
-extern int egVecPrint(FILE *file, const egVec *egv);
+extern int egVecWrite(FILE *file, const egVec *egv);
+extern int egVecSave(const char *fname, const egVec *egv);
 
 /* egop.c */
 extern egOp *const egOpAdd;

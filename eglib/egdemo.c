@@ -41,7 +41,7 @@ int main(int argc, const char **argv) {
       || egVecCopy(B, C)
       || egVecSet(C, 2)
       || egVecOperate(D, egOpMultiply, B, C)
-      || egVecPrint(file, D)) {
+      || egVecWrite(file, D)) {
     fprintf(stderr, "%s: problem\n", me);
     fclose(file);
     return 1;
